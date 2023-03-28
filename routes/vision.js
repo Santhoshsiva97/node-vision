@@ -26,7 +26,7 @@ router.post('/classify', async function(req, res, next) {
     MaxLabels: 10
   }
 
-  let labelsContent = [];  
+  let labelsContent = []; 
 
   await client.detectLabels(params, function(err, response) {
     if (err) {
@@ -36,13 +36,18 @@ router.post('/classify', async function(req, res, next) {
         labelsContent.push(label.Name);
       }) 
     } 
-  }).promise();
-
-  // returns the labels in response
-  res.json({
-    "labels": labelsContent
+  }).promise().then(() => {
+    // returns the labels in response
+    res.json({
+      "labels": labelsContent
+    });
+  }).catch((err) => {
+    // returns the error in response
+    res.json({
+      "error": err
+    });
   });
-  
+
 });
 
 module.exports = router;

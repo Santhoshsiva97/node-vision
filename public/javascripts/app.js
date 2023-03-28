@@ -76,7 +76,10 @@ $(() => {
         console.log('Data: ' + JSON.stringify(data));
   
         try {
-          if (!data || !data.labels) {
+          if(data && data.error) { // Error handling mechanism and show the error details in UI
+            const errorMessage = `Status(${data.error.statusCode}) - ${data.error.code} - ${data.error.message}`
+            throw errorMessage;
+          } else if (!data || !data.labels) {
             throw 'Unable to extract labels';
           }
             
